@@ -112,6 +112,9 @@ def run_clang_format_diff(args, file):
     try:
         with io.open(file, 'r', encoding='utf-8') as f:
             original = f.readlines()
+    except UnicodeDecodeError as uderr:
+        print("{}: {}".format(file, str(uderr)))
+        return list(), list()
     except IOError as exc:
         raise DiffError(str(exc))
     invocation = [args.clang_format_executable, file]
